@@ -1,7 +1,9 @@
 import React from 'react';
+import Navbar from './components/navbar';
 
 export default () => (
-  <div className="App">
-    <h1>Hi</h1>
-  </div>
+  <>
+    <Navbar />
+    <h1>s</h1>
+  </>
 );
