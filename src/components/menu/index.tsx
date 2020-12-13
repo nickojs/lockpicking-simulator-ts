@@ -1,7 +1,6 @@
 import React from 'react';
-// import { useSelector } from 'react-redux';
 import * as S from './styles';
-// import Hint from '../hint/hint';
+import Hint from '../hint';
 
 import { Path } from '../../models/Path';
 
@@ -16,12 +15,12 @@ export default (props: MenuProps) => {
     <S.MenuContainer
       {...props}
     >
-      <p>
+      <Hint>
         Use the WASD keys to control the menu
         {' '}
         <br />
         Select an option and press the same key again to enter
-      </p>
+      </Hint>
       <S.MenuLayer>
 
         <S.MenuTop>
