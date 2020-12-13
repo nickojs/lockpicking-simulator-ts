@@ -1,5 +1,5 @@
 import styled, { keyframes } from 'styled-components';
-// import { Link } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
 interface StyledProps {
   toggle: boolean;
@@ -26,7 +26,7 @@ export const Navbar = styled.nav`
   border-bottom: 2px solid grey;
 `;
 
-export const Button = styled.button`
+export const Button = styled(Link)`
   text-decoration: none;
   text-align: center;
 

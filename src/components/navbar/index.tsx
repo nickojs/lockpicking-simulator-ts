@@ -17,7 +17,7 @@ export default () => {
       <S.Navbar>
         <h1>Not ss</h1>
         {/* <h1>{isAuth ? username : 'Not Logged In'}  </h1> */}
-        <S.Button onClick={returnButtonHandler}>Home</S.Button>
+        <S.Button to="/" onClick={returnButtonHandler}>Home</S.Button>
       </S.Navbar>
       <S.ArrowContainer toggle={toggleMenu}>
         <S.Arrow src={arrow} alt="Arrow" onClick={() => setToggleMenu(!toggleMenu)} />
