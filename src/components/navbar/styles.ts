@@ -2,13 +2,13 @@ import styled, { keyframes } from 'styled-components';
 import { Link } from 'react-router-dom';
 
 interface StyledProps {
-  toggle: boolean;
+  menu: boolean;
 }
 
 export const Header = styled.div`
   position: fixed;
   left: 0; right: 0;
-  ${(props: StyledProps) => (props.toggle ? 'top: -46px' : 'top: 0px')}
+  ${({ menu }: StyledProps) => (menu ? 'top: 0px' : 'top: -50px')};
   z-index: 20;
   transition: top .5s;
 `;
@@ -17,6 +17,7 @@ export const Navbar = styled.nav`
   display: flex;
   flex-direction: row;
   justify-content: space-between;
+  align-items: center;
   
   padding: 12px;
   box-sizing: border-box;
@@ -39,7 +40,7 @@ export const ArrowContainer = styled.div`
   height: 28px;
   width: 28px;
   transition: transform .5s;
-  transform: ${({ toggle }: StyledProps) => !toggle && 'rotate(180deg)'};
+  transform: ${({ menu }: StyledProps) => menu && 'rotate(180deg)'};
 `;
 
 // using translateX because the image is flipped
