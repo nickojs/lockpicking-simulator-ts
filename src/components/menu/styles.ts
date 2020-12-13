@@ -69,7 +69,10 @@ export const MenuRight = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-    p{ margin-left: 12px; }
+    p{ 
+      margin-left: 12px; 
+      max-width: 85px;
+    }
 `;
 
 export const MenuLeft = styled.div`
@@ -79,7 +82,10 @@ export const MenuLeft = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-    p{ margin-left: 12px; }
+    p{ 
+      margin-left: 12px; 
+      max-width: 85px;
+    }
 `;
 
 // arrows default config
