@@ -8,7 +8,7 @@ import Home from '../containers/Home';
 import About from '../containers/About';
 // import Auth from '../containers/Auth/Auth';
 // import Logout from '../containers/Logout/Logout';
-// import Stats from '../containers/Stats/Stats';
+import Stats from '../containers/Stats';
 
 // import withNavigation from '../hoc/withNavigation';
 
@@ -21,7 +21,8 @@ const routesArray = [
   // { path: '/logout', name: 'Logout', Component: Logout }
   //  { path: '/stats', name: 'Stats', Component: Stats }
   { path: '/', name: 'Home', Component: Home },
-  { path: '/about', name: 'About', Component: About }
+  { path: '/about', name: 'About', Component: About },
+  { path: '/stats', name: 'Stats', Component: Stats }
 ];
 
 const routes = (
