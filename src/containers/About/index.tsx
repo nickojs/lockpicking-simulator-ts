@@ -15,10 +15,7 @@ export default () => (
           <S.Link href="https://github.com/nickojs">This dude</S.Link>
         </Line>
         <Line>
-          Developed with ReactJs, using
-          {' '}
-          <S.Link href="https://www.npmjcom/package/cra-template-nickojs">my clean template</S.Link>
-          , check it out!
+          Developed with ReactJs, TypeScript and other amazing tools
         </Line>
         <Line>Backgrounds are mostly Skyrim screenshots found on the web</Line>
         <Line>Menu arrows created by my beautiful brother</Line>
