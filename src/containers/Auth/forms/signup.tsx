@@ -1,14 +1,9 @@
 import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import * as S from './styles';
+import { FormProps } from '.';
 
-import { Options } from '../../../hooks/useRequest';
-
-interface SignUpProps {
-  optionsHandler: (payload: Options) => void;
-}
-
-export default ({ optionsHandler }: SignUpProps) => {
+export default ({ optionsHandler }: FormProps) => {
   const [togglePassword, setTogglePassword] = useState(true);
   const { register, handleSubmit, errors } = useForm({});
 

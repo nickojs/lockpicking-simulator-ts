@@ -4,11 +4,15 @@ import * as S from './styles';
 import Dialog from '../../../components/dialog';
 import useRequest, { Options, State } from '../../../hooks/useRequest';
 
-import SignupForm from './signup';
-// import LoginForm from './loginForm/loginForm';
+import Signup from './signup';
+import Login from './login';
 // import TokenForm from './tokenForm/tokenForm';
 // import UpdateForm from './updateForm/updateForm';
 // import DeleteForm from './deleteForm/deleteForm';
+
+export interface FormProps {
+  optionsHandler: (payload: Options) => void;
+}
 
 const Forms = ({ index }: { index: number }) => {
   const [options, setOptions] = useState<Options>(null);
@@ -22,7 +26,12 @@ const Forms = ({ index }: { index: number }) => {
   switch (index) {
     case 0:
       form = (
-        <SignupForm optionsHandler={requestHandler} />
+        <Signup optionsHandler={requestHandler} />
+      );
+      break;
+    case 1:
+      form = (
+        <Login optionsHandler={requestHandler} />
       );
       break;
     // case 1:
