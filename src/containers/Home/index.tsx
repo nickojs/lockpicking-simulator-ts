@@ -1,7 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useHistory } from 'react-router-dom';
-// import { useDispatch, useSelector } from 'react-redux';
-// import { setNavigation } from '../../store/actions/user';
 
 import * as S from './styles';
 import { Title, TextSmall, InnerContainer } from '../../generalStyles';
@@ -21,11 +19,8 @@ export default () => {
   const [path, setPath] = useState<Path>('');
   const [direction, setDirection] = useState<Direction | null>(null);
   const [menu, toggleMenu] = useState<boolean>(false);
-  // const { isAuth } = useSelector((state) => state.user);
   const container = useRef<HTMLDivElement | null>(null);
   const history = useHistory();
-
-  const isAuth = true;
 
   const triggerRedirect = (dir: Direction) => {
     if (direction === dir) {
@@ -63,7 +58,7 @@ export default () => {
       case 'Numpad6':
         triggerRedirect(Direction.RIGHT);
         setDirection(Direction.RIGHT);
-        setPath(isAuth ? 'logout' : 'auth');
+        setPath('auth');
         break;
       case 'Space':
         toggleMenu(!menu);
@@ -86,9 +81,9 @@ export default () => {
   return (
     <>
       <S.Container
+        onKeyDown={keyHandler}
         ref={(ref) => container.current = ref}
         tabIndex={0}
-        onKeyDown={keyHandler}
         isMenuOpen={menu}
       >
         <InnerContainer>
