@@ -3,15 +3,23 @@ import * as S from './styles';
 import { Title, TextSmall, InnerContainer } from '../../generalStyles';
 
 import SideMenu from '../../components/sidemenu';
+import Forms from './forms';
 
 export default () => {
   const [menu, toggleMenu] = useState<boolean>(false);
-  // const [triggerForm, setTriggerForm] = useState(false);
   const [index, setIndex] = useState<number>(0);
+  const [form, toggleForm] = useState<boolean>(false);
   const container = useRef<HTMLDivElement | null>(null);
 
   const keyHandler = (e: React.KeyboardEvent) => {
     const key = e.nativeEvent.code;
+    const currentFocusedElement = document.activeElement;
+
+    // menu only opens if no form is focused
+    if (currentFocusedElement === container.current && key === 'Space') toggleMenu(true);
+
+    // only capture keys while the menu is opened
+    if (!menu) return;
 
     switch (key) {
       case 'KeyW':
@@ -24,10 +32,11 @@ export default () => {
       case 'Numpad2':
         if (index < 4) setIndex((prevIndex) => prevIndex + 1);
         break;
-      case 'Tab':
-      case 'Space':
-        // setTriggerForm(true);
-        toggleMenu(!menu);
+      case 'KeyD':
+      case 'ArrowRight':
+      case 'Numpad6':
+        toggleForm(true);
+        toggleMenu(false);
         break;
       default:
         break;
@@ -38,8 +47,6 @@ export default () => {
     e.preventDefault();
     container.current?.focus();
   };
-
-  // const changeFormType = (i) => setIndex(i);
 
   useEffect(() => { container.current?.focus(); }, []);
 
@@ -55,8 +62,9 @@ export default () => {
           <Title>Login</Title>
           <TextSmall>Press space to open menu</TextSmall>
         </InnerContainer>
-        {/* {triggerForm
-          && <Forms index={index} changeForm={changeFormType} />} */}
+
+        {form && <Forms index={index} />}
+
       </S.Container>
       {menu && (
         <SideMenu
