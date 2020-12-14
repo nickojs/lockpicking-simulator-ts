@@ -39,7 +39,7 @@ export default (props: MenuProps) => {
 
         <S.MenuRight isAuth={false}>
           <S.RowWrapper>
-            <S.ArrowRight active={path === 'logout' ? 1 : 0} />
+            <S.ArrowRight active={path === 'auth' ? 1 : 0} />
           </S.RowWrapper>
           <p>Logout</p>
           {/* <p>{isAuth ? 'Logout' : 'Login'}</p> */}
