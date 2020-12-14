@@ -6,6 +6,7 @@ import useRequest, { Options, State } from '../../../hooks/useRequest';
 
 import Signup from './signup';
 import Login from './login';
+import Token from './token';
 // import TokenForm from './tokenForm/tokenForm';
 // import UpdateForm from './updateForm/updateForm';
 // import DeleteForm from './deleteForm/deleteForm';
@@ -34,38 +35,11 @@ const Forms = ({ index }: { index: number }) => {
         <Login optionsHandler={requestHandler} />
       );
       break;
-    // case 1:
-    //   form = (
-    //     <LoginForm
-    //       optionsHandler={requestHandler}
-    //       dataHandler={requestData}
-    //     />
-    //   );
-    //   break;
-    // case 2:
-    //   form = (
-    //     <TokenForm
-    //       optionsHandler={requestHandler}
-    //       dataHandler={requestData}
-    //     />
-    //   );
-    //   break;
-    // case 3:
-    //   form = (
-    //     <UpdateForm
-    //       optionsHandler={requestHandler}
-    //       dataHandler={requestData}
-    //     />
-    //   );
-    //   break;
-    // case 4:
-    //   form = (
-    //     <DeleteForm
-    //       optionsHandler={requestHandler}
-    //       dataHandler={requestData}
-    //     />
-    //   );
-    //   break;
+    case 2:
+      form = (
+        <Token optionsHandler={requestHandler} />
+      );
+      break;
     default:
       break;
   }
