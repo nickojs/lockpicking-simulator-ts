@@ -30,9 +30,10 @@ export const Navbar = styled.nav`
 export const Button = styled(Link)`
   text-decoration: none;
   text-align: center;
-
+  margin-right: 12px;
+  color: grey;
+  
   &:hover{ text-shadow: 1px 1px 10px grey; }
-  &:visited{ color: grey; }
 `;
 
 export const ArrowContainer = styled.div`

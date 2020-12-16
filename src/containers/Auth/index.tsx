@@ -1,9 +1,11 @@
 import React, { useState, useRef, useEffect } from 'react';
+import { useSelector } from 'react-redux';
 import * as S from './styles';
 import { Title, TextSmall, InnerContainer } from '../../generalStyles';
 
 import SideMenu from '../../components/sidemenu';
 import Forms from './forms';
+import { RootState } from '../../store/rootReducer';
 
 const UnAuthMenu = [
   {
@@ -40,7 +42,8 @@ export default () => {
   const [items, setItems] = useState<MenuArray>(UnAuthMenu);
   const container = useRef<HTMLDivElement | null>(null);
 
-  const isAuth = false;
+  const { token } = useSelector((state: RootState) => state.user);
+  const isAuth = token !== null;
 
   const keyHandler = (e: React.KeyboardEvent) => {
     const key = e.nativeEvent.code;

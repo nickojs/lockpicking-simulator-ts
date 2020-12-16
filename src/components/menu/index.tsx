@@ -38,7 +38,7 @@ export default ({ path, ...props }: MenuProps) => (
         <S.RowWrapper>
           <S.ArrowRight active={path === 'auth' ? 1 : 0} />
         </S.RowWrapper>
-        <p>Logout</p>
+        <p>Auth</p>
         {/* <p>{isAuth ? 'Logout' : 'Login'}</p> */}
       </S.MenuRight>
 
