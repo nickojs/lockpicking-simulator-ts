@@ -58,13 +58,10 @@ export const MenuBottom = styled.div`
   transform: translate(-50%, -18%);
 `;
 
-const login = css` right: calc(-18% - 4px); `;
-const logout = css` right: -23%; `;
-
 export const MenuRight = styled.div`
   position: absolute;
-  ${({ isAuth }: { isAuth: boolean }) => (isAuth ? logout : login)};
   top: calc(45% - 6px);
+  right: calc(-16% - 4px);
   transform: translate(0, -45%);
   display: flex;
   justify-content: center;
