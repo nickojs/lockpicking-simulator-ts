@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { useForm } from 'react-hook-form';
-import { setToken } from '../../../store/userSlice';
+import { setToken, setUserName } from '../../../store/userSlice';
 
 import * as S from './styles';
 import useRequest, { Options, State } from '../../../hooks/useRequest';
@@ -24,7 +24,10 @@ export default () => {
 
   useEffect(() => {
     // mock auth token
-    dispatch(setToken('token'));
+    if (data) {
+      dispatch(setToken('token'));
+      dispatch(setUserName('c00l_us3rn4m3'));
+    }
   }, [data]);
 
   return (
