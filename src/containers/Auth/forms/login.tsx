@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
+import { useDispatch } from 'react-redux';
 import { useForm } from 'react-hook-form';
+import { setToken } from '../../../store/userSlice';
 
 import * as S from './styles';
 import useRequest, { Options, State } from '../../../hooks/useRequest';
@@ -12,6 +14,7 @@ export default () => {
   const [requestData] = useRequest(options);
   const { loading, error, data } = requestData as State;
 
+  const dispatch = useDispatch();
   const submit = (payload: Record<string, any>) => setOptions({
     method: 'POST',
     // url: `https://${process.env.REACT_APP_BACKEND}/auth/login`,
@@ -20,8 +23,8 @@ export default () => {
   });
 
   useEffect(() => {
-    // redirect
-    console.log(data);
+    // mock auth token
+    dispatch(setToken('token'));
   }, [data]);
 
   return (
