@@ -1,12 +1,14 @@
 import React from 'react';
 import * as S from './styles';
 import Hint from '../../components/hint';
+import { MenuArray, MenuItem } from '../../containers/Auth';
 
 interface SideMenuProps extends React.HTMLAttributes<HTMLDivElement> {
   index: number;
+  items: MenuArray;
 }
 
-export default ({ index, ...props }: SideMenuProps) => (
+export default ({ items, index, ...props }: SideMenuProps) => (
   <S.Container {...props}>
     <Hint>
       Use the WASD keys (or arrows) to control the menu
@@ -16,11 +18,14 @@ export default ({ index, ...props }: SideMenuProps) => (
     </Hint>
     <S.SideMenu>
       <S.SideItems>
-        <S.Item active={index === 0 ? 1 : 0}>Create Account</S.Item>
-        <S.Item active={index === 1 ? 1 : 0}>Login</S.Item>
-        <S.Item active={index === 2 ? 1 : 0}>Request Token</S.Item>
-        <S.Item active={index === 3 ? 1 : 0}>Update Account</S.Item>
-        <S.Item active={index === 4 ? 1 : 0}>Delete Account</S.Item>
+        {items.map((item: MenuItem) => (
+          <S.Item
+            key={item.id}
+            active={index === item.id ? 1 : 0}
+          >
+            {item.name}
+          </S.Item>
+        ))}
       </S.SideItems>
     </S.SideMenu>
   </S.Container>

@@ -1,27 +1,36 @@
-import React, { useState/* , useEffect */ } from 'react';
-// import { useHistory } from 'react-router-dom';
-// import { useDispatch } from 'react-redux';
+import React, { useState, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
-// import { setAuth } from '../../../../store/actions/user';
 
 import * as S from './styles';
-import { FormProps } from '.';
+import useRequest, { Options, State } from '../../../hooks/useRequest';
 
-export default ({ optionsHandler }: FormProps) => {
+export default () => {
   const [togglePassword, setTogglePassword] = useState(true);
   const { register, handleSubmit, errors } = useForm();
 
-  // const history = useHistory();
-  // const dispatch = useDispatch();
+  const [options, setOptions] = useState<Options>(null);
+  const [requestData] = useRequest(options);
+  const { loading, error, data } = requestData as State;
 
-  const submit = (payload: Record<string, any>) => optionsHandler({
+  const submit = (payload: Record<string, any>) => setOptions({
     method: 'POST',
-    url: `https://${process.env.REACT_APP_BACKEND}/auth/login`,
+    // url: `https://${process.env.REACT_APP_BACKEND}/auth/login`,
+    url: 'https://reqres.in/api/users',
     data: payload
   });
 
+  useEffect(() => {
+    // redirect
+    console.log(data);
+  }, [data]);
+
   return (
     <>
+      <S.MsgContainer>
+        {error && <S.ErrorMsg>{error}</S.ErrorMsg>}
+        {loading && <p>Loading...</p>}
+      </S.MsgContainer>
+
       <S.SmallTitle>Wait... I know you</S.SmallTitle>
       <S.Form key={1} onSubmit={handleSubmit(submit)} id="loginForm">
         <S.FormInputs>

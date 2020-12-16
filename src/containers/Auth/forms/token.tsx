@@ -1,19 +1,33 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import * as S from './styles';
-import { FormProps } from '.';
+import useRequest, { Options, State } from '../../../hooks/useRequest';
 
-export default ({ optionsHandler }: FormProps) => {
+export default () => {
   const { register, handleSubmit, errors } = useForm();
 
-  const submit = (payload: Record<string, any>) => optionsHandler({
+  const [options, setOptions] = useState<Options>(null);
+  const [requestData] = useRequest(options);
+  const { loading, error, data } = requestData as State;
+
+  const submit = (payload: Record<string, any>) => setOptions({
     method: 'POST',
-    url: `https://${process.env.REACT_APP_BACKEND}/auth/request-token/`,
+    // url: `https://${process.env.REACT_APP_BACKEND}/auth/request-token`,
+    url: 'https://reqres.in/api/users',
     data: payload
   });
 
+  useEffect(() => {
+    console.log(data);
+  }, [data]);
+
   return (
     <>
+      <S.MsgContainer>
+        {error && <S.ErrorMsg>{error}</S.ErrorMsg>}
+        {loading && <p>Loading...</p>}
+      </S.MsgContainer>
+
       <S.SmallTitle>
         Forgot your password? Request a temporary token!
       </S.SmallTitle>

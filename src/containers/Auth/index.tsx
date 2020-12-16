@@ -5,11 +5,42 @@ import { Title, TextSmall, InnerContainer } from '../../generalStyles';
 import SideMenu from '../../components/sidemenu';
 import Forms from './forms';
 
+const UnAuthMenu = [
+  {
+    id: 0,
+    name: 'Create Account'
+  },
+  {
+    id: 1,
+    name: 'Login'
+  },
+  {
+    id: 2,
+    name: 'Request Token'
+  }
+];
+
+const AuthMenu = [
+  {
+    id: 0,
+    name: 'Update Account'
+  },
+  {
+    id: 1,
+    name: 'Delete Account'
+  }
+];
+
+export type MenuItem = typeof UnAuthMenu[0];
+export type MenuArray = MenuItem[];
+
 export default () => {
   const [menu, toggleMenu] = useState<boolean>(false);
   const [index, setIndex] = useState<number>(0);
-  const [form, toggleForm] = useState<boolean>(false);
+  const [items, setItems] = useState<MenuArray>(UnAuthMenu);
   const container = useRef<HTMLDivElement | null>(null);
+
+  const isAuth = false;
 
   const keyHandler = (e: React.KeyboardEvent) => {
     const key = e.nativeEvent.code;
@@ -30,12 +61,11 @@ export default () => {
       case 'KeyS':
       case 'ArrowDown':
       case 'Numpad2':
-        if (index < 4) setIndex((prevIndex) => prevIndex + 1);
+        if (index < Object.keys(items).length - 1) setIndex((prevIndex) => prevIndex + 1);
         break;
       case 'KeyD':
       case 'ArrowRight':
       case 'Numpad6':
-        toggleForm(true);
         toggleMenu(false);
         break;
       default:
@@ -50,6 +80,8 @@ export default () => {
 
   useEffect(() => { container.current?.focus(); }, []);
 
+  useEffect(() => { setItems(isAuth ? AuthMenu : UnAuthMenu); }, [isAuth]);
+
   return (
     <>
       <S.Container
@@ -63,12 +95,13 @@ export default () => {
           <TextSmall>Press space to open menu</TextSmall>
         </InnerContainer>
 
-        {form && <Forms index={index} />}
+        <Forms index={index} isAuth={isAuth} />
 
       </S.Container>
       {menu && (
         <SideMenu
           index={index}
+          items={items}
           onMouseDown={mouseDownHandler}
         />
       )}

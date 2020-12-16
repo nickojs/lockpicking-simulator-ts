@@ -1,20 +1,39 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
+
 import * as S from './styles';
-import { FormProps } from '.';
+import useRequest, { Options, State } from '../../../hooks/useRequest';
 
-export default ({ optionsHandler }: FormProps) => {
+export default () => {
   const [togglePassword, setTogglePassword] = useState(true);
-  const { register, handleSubmit, errors } = useForm({});
+  const { register, handleSubmit, errors } = useForm({
+    reValidateMode: 'onBlur'
+  });
 
-  const submit = (payload: Record<string, any>) => optionsHandler({
+  const [options, setOptions] = useState<Options>(null);
+  const [requestData] = useRequest(options);
+  const { loading, error, data } = requestData as State;
+
+  const submit = (payload: Record<string, any>) => setOptions({
     method: 'POST',
-    url: `https://${process.env.REACT_APP_BACKEND}/auth/signup`,
+    // url: `https://${process.env.REACT_APP_BACKEND}/auth/signup`,
+    url: 'https://reqres.in/api/users',
     data: payload
   });
 
+  useEffect(() => {
+    // redirect to login, auto login, whatever
+    console.log(data);
+  }, [data]);
+
   return (
     <>
+      <S.MsgContainer>
+        {error && <S.ErrorMsg>{error}</S.ErrorMsg>}
+        {loading && <p>Loading...</p>}
+        {data && <p>Redirecting...</p>}
+      </S.MsgContainer>
+
       <S.SmallTitle>Hey you, you&apos;re finally awake</S.SmallTitle>
       <S.Form key={0} onSubmit={handleSubmit(submit)} id="createAccountForm">
         <S.FormInputs>
@@ -24,11 +43,11 @@ export default ({ optionsHandler }: FormProps) => {
             name="username"
             ref={register({ required: true, minLength: 4, maxLength: 18 })}
           />
-          {errors?.username?.types?.required
+          {errors.username?.type === 'required'
             && <S.ErrorMsg>username required</S.ErrorMsg>}
-          {errors?.username?.types?.minLength
+          {errors.username?.type === 'minLength'
             && <S.ErrorMsg>username should be at least 4 characters long</S.ErrorMsg>}
-          {errors?.username?.types?.maxLength
+          {errors.username?.type === 'maxLength'
             && <S.ErrorMsg>username maximum length (18) exceeded</S.ErrorMsg>}
           <S.Input
             type="email"
@@ -36,9 +55,9 @@ export default ({ optionsHandler }: FormProps) => {
             name="email"
             ref={register({ required: true, pattern: /(.+)@(.+){2,}\.(.+){2,}/ })}
           />
-          {errors?.email?.types?.required
+          {errors.email?.type === 'required'
             && <S.ErrorMsg>email required</S.ErrorMsg>}
-          {errors?.email?.types?.pattern
+          {errors.email?.type === 'pattern'
             && <S.ErrorMsg>invalid email</S.ErrorMsg>}
           <S.InputDiv>
             <S.Input
@@ -52,9 +71,9 @@ export default ({ optionsHandler }: FormProps) => {
               indicator={togglePassword ? 1 : 0}
             />
           </S.InputDiv>
-          {errors?.password?.types?.required
+          {errors.password?.type === 'required'
             && <S.ErrorMsg>password required</S.ErrorMsg>}
-          {errors?.password?.types?.pattern
+          {errors.password?.type === 'pattern'
             && (
             <S.ErrorMsg>
               password should be at least 8 characters long
