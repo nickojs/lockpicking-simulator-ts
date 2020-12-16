@@ -26,7 +26,7 @@ export default () => {
     // mock auth token
     if (data) {
       dispatch(setToken('token'));
-      dispatch(setUserName('c00l_us3rn4m3'));
+      dispatch(setUserName(data.username));
     }
   }, [data]);
 
