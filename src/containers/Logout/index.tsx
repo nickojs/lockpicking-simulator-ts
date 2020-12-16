@@ -8,6 +8,7 @@ const Logout = () => {
 
   useEffect(() => {
     dispatch(clearAuth());
+    localStorage.removeItem('auth');
   }, [dispatch]);
 
   return <Redirect to="/" />;
