@@ -69,12 +69,28 @@ const requestReducer = (state: State, action: Actions) => {
 export default (options: Options) => {
   const [requestState, dispatch] = useReducer(requestReducer, initialState);
 
+  let baseURL: string = '';
+
+  switch (process.env.NODE_ENV) {
+    case 'production':
+      baseURL = <string>process.env.REACT_APP_PROD_API;
+      break;
+    case 'development':
+      baseURL = <string>process.env.REACT_APP_DEV_API;
+      break;
+    default:
+      break;
+  }
+
+  console.log(baseURL);
+
   const fetchData = useCallback(async () => {
     dispatch({ type: ActionTypes.LOADING, status: true });
     try {
       const request = await axios({
         ...options,
-        responseType: 'json'
+        responseType: 'json',
+        baseURL
       });
       dispatch({ type: ActionTypes.DATA, data: request.data });
     } catch (err) {
