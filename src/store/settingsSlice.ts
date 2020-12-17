@@ -5,7 +5,7 @@ export type Config = {
   unlockzone: number[];
   lifeSpeed: number;
   info: string;
-  startingTime: Date;
+  startingTime: number;
 }
 
 interface SettingsState {
@@ -30,8 +30,8 @@ const settingsSlice = createSlice({
     gameOverToggle(state, action: PayloadAction<boolean>) {
       state.gameOver = action.payload;
     },
-    setSettings(state, action: PayloadAction<Config>) {
-      state.config = action.payload;
+    setSettings(state, action: PayloadAction<{ settings: Config }>) {
+      state.config = action.payload.settings;
     }
   }
 });
