@@ -1,15 +1,17 @@
 import React, { useState } from 'react';
-// import { useDispatch } from 'react-redux';
-// import { settings } from '../../store/actions/game';
+import { useHistory } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import { setSettings } from '../../store/settingsSlice';
 
-// import zoneGenerator from '../../helpers/zone-generator';
+import zoneGenerator from '../../helpers/zone-generator';
 
 import * as S from './styles';
 import ProgressBar from '../../components/progressBar';
 import Dialog from '../../components/dialog';
 
-const LockpadMenu = () => {
-  // const dispatch = useDispatch();
+export default () => {
+  const dispatch = useDispatch();
+  const history = useHistory();
   const [difficulty, setDifficulty] = useState<number>(0);
 
   const changeDifficultyHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -17,18 +19,16 @@ const LockpadMenu = () => {
   };
 
   const dispatchGameSettings = () => {
-    // const roundedDifficulty = Math.floor(difficulty);
-    // const data = zoneGenerator(roundedDifficulty);
+    const roundedDifficulty = Math.floor(difficulty);
+    const data = zoneGenerator(roundedDifficulty);
 
     const gameSettings = {
-      // ...data,
+      ...data,
       startingTime: Date.now()
     };
 
-    console.log(gameSettings);
-
-    // dispatch(settings(gameSettings));
-    // history.push('/game');
+    dispatch(setSettings({ settings: gameSettings }));
+    history.push('/game');
   };
 
   return (
@@ -57,5 +57,3 @@ const LockpadMenu = () => {
     </S.Container>
   );
 };
-
-export default LockpadMenu;
