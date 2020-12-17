@@ -47,6 +47,12 @@
         "ts": "never",
         "tsx": "never"
       }
+    ],
+    "no-plusplus": [
+      "error",
+      {
+        "allowForLoopAfterthoughts": true
+      }
     ]
   }
 }
