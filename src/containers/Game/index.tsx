@@ -1,49 +1,48 @@
-import React/* , { useEffect } */ from 'react';
-// import { useDispatch, useSelector } from 'react-redux';
-// import * as actions from '../../store/actions/input';
+import React, { useEffect, useState } from 'react';
 
 import * as S from './styles';
-// import Lockpad from './lockpad/lockpad';
 import Lockpad from '../../components/lockpad';
 // import HUD from '../../components/hud/hud';
 
 const LockPad = () => {
-  // const dispatch = useDispatch();
-  console.log('hi');
-  // const { input, game, pick } = useSelector((state) => state);
-  // const { mouseDown, keyDown, keyPressMoment } = input;
-  // const { pickLife, pickLives } = pick;
-  // const { settings } = game;
-  // const { info, lifeSpeed } = settings;
+  const [mouseDown, setMouseDown] = useState<boolean>(false);
+  const [keyDown, setKeyDown] = useState<boolean>(false);
+  const [keyDownTime, setKeyDownTime] = useState<number>(0);
 
-  // const setPickPosition = ({ nativeEvent }) => {
-  //   // needs to check the keyDown to prevent 'move and unlock' bug
-  //   if (mouseDown && !keyDown) {
-  //     return dispatch(actions.inputEvent(nativeEvent));
-  //   }
-  // };
+  const mouseDownHandler = () => {
+    setMouseDown(true);
+  };
 
-  // const setKeyDown = () => {
-  //   if (!keyDown) {
-  //     dispatch(actions.keyDown());
-  //     dispatch(actions.keyPressStart());
-  //   }
-  // };
+  const mouseUpHandler = () => {
+    setMouseDown(false);
+  };
 
-  // const setKeyUp = () => {
-  //   dispatch(actions.keyUp());
-  //   dispatch(actions.keyPressEnd());
-  // };
+  const keyDownHandler = () => {
+    setKeyDown(true);
+  };
 
-  // // acts like a global timeout, counting for how long the key is being pressed
-  // useEffect(() => {
-  //   const timer = setTimeout(() => {
-  //     if (keyPressMoment) {
-  //       dispatch(actions.keyPressInc(keyPressMoment + lifeSpeed));
-  //     }
-  //   }, lifeSpeed);
-  //   return () => { clearTimeout(timer); };
-  // }, [keyPressMoment, lifeSpeed, dispatch]);
+  const keyUpHandler = () => {
+    setKeyDown(false);
+    setKeyDownTime(0);
+  };
+
+  const mouseMoveHandler = () => {
+    if (mouseDown) {
+      console.log('moving mouse');
+    }
+  };
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      if (keyDown) setKeyDownTime((pState: number) => pState + 16);
+    }, 16);
+
+    return () => { clearInterval(timer); };
+  }, [keyDown]);
+
+  useEffect(() => {
+    console.log(keyDownTime);
+  }, [keyDownTime]);
 
   return (
     <>
@@ -51,11 +50,11 @@ const LockPad = () => {
       <S.Container>
         <S.InnerContainer
           tabIndex={0}
-          // onMouseUp={() => dispatch(actions.mouseUp())}
-          // onMouseDown={() => dispatch(actions.mouseDown())}
-          // onKeyUp={setKeyUp}
-          // onKeyDown={setKeyDown}
-          // onMouseMove={setPickPosition}
+          onMouseUp={mouseUpHandler}
+          onMouseDown={mouseDownHandler}
+          onKeyUp={keyUpHandler}
+          onKeyDown={keyDownHandler}
+          onMouseMove={mouseMoveHandler}
         >
           <Lockpad />
         </S.InnerContainer>
