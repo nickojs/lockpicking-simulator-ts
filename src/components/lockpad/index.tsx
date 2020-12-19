@@ -4,35 +4,13 @@ import { useSelector } from 'react-redux';
 import { RootState } from '../../store/rootReducer';
 import { Config } from '../../store/settingsSlice';
 
-// import * as moveActions from '../../../store/actions/movement';
-// import * as pickActions from '../../../store/actions/pick';
-// import * as gameActions from '../../../store/actions/game';
-
 import * as S from './styles';
 // import Notification from '../../../components/notification/notification';
 import lockhole from '../../assets/lockpad/lockhole.png';
 import pickImg from '../../assets/lockpad/pick_with_space.png';
 
 import useAngle from '../../hooks/useAngle';
-// import distanceMeter from '../../../helpers/distance-meter';
-
-const distanceMeter = (pickPosition: number, unlockZone: number[]) => {
-  const unlockZoneLimit = unlockZone.length - 1;
-  const unlockZoneStart = unlockZone[0];
-  const unlockZoneEnd = unlockZone[unlockZoneLimit];
-
-  if (unlockZone.includes(pickPosition)) {
-    return 0;
-  }
-  if (pickPosition < unlockZoneStart) {
-    return unlockZoneStart - pickPosition;
-  }
-  if (pickPosition > unlockZoneEnd) {
-    return pickPosition - unlockZoneEnd;
-  }
-
-  return 0;
-};
+import distanceMeter from '../../helpers/distance-meter';
 
 interface LockpadProps {
   event: MouseEvent | null;
@@ -136,26 +114,6 @@ export default ({ event, keyDown }: LockpadProps) => {
   // useEffect(() => {
   //   if (pickLives === 0) dispatch(gameActions.toggleGameOver(true));
   // }, [pickLives, dispatch]);
-
-  // // creates the redirect component
-  // useEffect(() => {
-  //   if (unlock || gameOver) {
-  //     const picks = pickLives;
-  //     const totalTime = (Date.now() - startingTime) / 1000;
-  //     const gameData = {
-  //       gameOver,
-  //       unlock,
-  //       stats: { picks, totalTime }
-  //     };
-  //     dispatch(gameActions.setRedirect({
-  //       pathname: '/endgame',
-  //       state: gameData
-  //     }));
-
-  //     // post stats if there is an authenticated user
-  //     if (username) postStats(totalTime, picks);
-  //   }
-  // }, [unlock, gameOver, pickLives, startingTime, dispatch, postStats, username]);
 
   return (
     <>
