@@ -14,8 +14,9 @@ const pickSlice = createSlice({
   name: 'pick',
   initialState,
   reducers: {
-    reduceQtd(state, action: PayloadAction<number>) {
-      state.pickQtd -= action.payload;
+    reduceQtd(state) {
+      state.pickQtd -= 1;
+      state.pickLife = 100;
     },
     reduceLife(state, action: PayloadAction<number>) {
       state.pickLife -= action.payload;
@@ -26,5 +27,7 @@ const pickSlice = createSlice({
   }
 });
 
-export const { reduceLife, reduceQtd, clearPicks } = pickSlice.actions;
+export const {
+  reduceLife, reduceQtd, clearPicks
+} = pickSlice.actions;
 export default pickSlice.reducer;

@@ -1,11 +1,13 @@
 import React, { useEffect, useRef, useState } from 'react';
+
+import { useSelector, useDispatch } from 'react-redux';
 import { Redirect } from 'react-router-dom';
-import { useSelector } from 'react-redux';
+import { reduceLife, reduceQtd, clearPicks } from '../../store/pickSlice';
+
 import { RootState } from '../../store/rootReducer';
 import { Config } from '../../store/settingsSlice';
 
 import * as S from './styles';
-// import Notification from '../../../components/notification/notification';
 import lockhole from '../../assets/lockpad/lockhole.png';
 import pickImg from '../../assets/lockpad/pick_with_space.png';
 
@@ -17,21 +19,25 @@ interface LockpadProps {
   keyDown: boolean;
 }
 
+enum ENDGAME {
+  WAITING,
+  FAIL,
+  WIN,
+}
+
 const DEGS = 90;
 
 export default ({ event, keyDown }: LockpadProps) => {
-  // const { input, movement, pick, game, user } = useSelector((state) => state);
-  // const { token, username } = user;
-  // const { pickLife, pickLives } = pick;
   const { config } = useSelector((state: RootState) => state.settings);
   const { unlockzone } = config as Config;
+  const { pickLife, pickQtd } = useSelector((state: RootState) => state.pick);
 
   const [keyDownTime, setKeyDownTime] = useState<number>(0);
   const [distance, setDistance] = useState<number>(-1);
   const [unlockable, setUnlockable] = useState<boolean>(false);
-  const [redirect, setRedirect] = useState<boolean>(false);
+  const [endgame, setEndgame] = useState<ENDGAME>(ENDGAME.WAITING);
 
-  // const dispatch = useDispatch();
+  const dispatch = useDispatch();
   const pickRef = useRef<HTMLImageElement | null>(null);
   const pickPosition = useAngle(pickRef, event);
 
@@ -52,7 +58,6 @@ export default ({ event, keyDown }: LockpadProps) => {
   //   });
   // }, [token, username]);
 
-  // // defines if the pick is on the hotzone
   useEffect(() => {
     const distance = distanceMeter(pickPosition, unlockzone);
     setDistance(distance > DEGS ? -3 : DEGS - distance);
@@ -68,6 +73,7 @@ export default ({ event, keyDown }: LockpadProps) => {
   }, [keyDown]);
 
   useEffect(() => {
+    setUnlockable(false);
     if (distance === 90) {
       setUnlockable(true);
     }
@@ -75,48 +81,37 @@ export default ({ event, keyDown }: LockpadProps) => {
 
   useEffect(() => {
     if (unlockable && keyDownTime > 750) {
-      setRedirect(true);
+      setEndgame(ENDGAME.WIN);
     }
   }, [unlockable, keyDownTime]);
 
-  // // defines wherever the pick is broken or not
-  // useEffect(() => {
-  //   // if the key is not being pressed, exits this effect
-  //   if (!keyPressMoment) return;
+  useEffect(() => {
+    if (keyDownTime > 150 && pickLife > 0 && !unlockable) {
+      dispatch(reduceLife(0.5));
+    }
+  }, [keyDownTime, pickLife, unlockable]);
 
-  //   const diffTime = Math.abs(Date.now() - keyPressMoment);
-  //   // starts to "hurt" the pick after sometime
-  //   if (diffTime > 20) {
-  //     dispatch(gameActions.toggleUnlock(false));
-  //     dispatch(pickActions.reducePickLife());
+  useEffect(() => {
+    if (pickLife === 0) {
+      dispatch(reduceQtd());
+    }
+  }, [pickLife]);
 
-  //     if (isUnlockable) {
-  //       dispatch(gameActions.toggleUnlock(true));
-  //     }
-  //   }
-  // }, [keyPressMoment, isUnlockable, dispatch]);
+  useEffect(() => {
+    if (pickQtd - 1 < 0) {
+      setEndgame(ENDGAME.FAIL);
+    }
+  }, [pickQtd]);
 
-  // // remove a pick if pickLife reduces to zero, also toggles notification
-  // useEffect(() => {
-  //   const timer = setTimeout(() => {
-  //     dispatch(gameActions.toggleNotification(null));
-  //   }, 1500);
-
-  //   if (pickLife === 0) {
-  //     dispatch(gameActions.toggleNotification('Oops! You just broke a pick'));
-  //     dispatch(pickActions.reducePickLives());
-  //   }
-
-  //   return () => { clearTimeout(timer); };
-  // }, [pickLife, dispatch]);
-
-  // // ends game if pickLives is reduced to zero
-  // useEffect(() => {
-  //   if (pickLives === 0) dispatch(gameActions.toggleGameOver(true));
-  // }, [pickLives, dispatch]);
+  useEffect(() => {
+    if (endgame > 0) {
+      dispatch(clearPicks());
+    }
+  }, [endgame]);
 
   return (
     <>
+      {endgame === 0 && (
       <S.LockBackground>
         <S.LockpadContainer
           position={distance}
@@ -137,10 +132,17 @@ export default ({ event, keyDown }: LockpadProps) => {
           </S.LockpadBackground>
         </S.LockpadContainer>
       </S.LockBackground>
-      {redirect
-        && <Redirect to="/" />}
-      {/* {notification
-        && <Notification>Oops, you just broke a pick</Notification>} */}
+      )}
+      {endgame > 0 && (
+        <Redirect
+          to={{
+            pathname: '/endgame',
+            state: {
+              endgame
+            }
+          }}
+        />
+      )}
     </>
   );
 };
