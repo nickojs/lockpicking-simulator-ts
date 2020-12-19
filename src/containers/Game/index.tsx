@@ -1,13 +1,19 @@
 import React, { useState } from 'react';
+import { useSelector } from 'react-redux';
+import { RootState } from '../../store/rootReducer';
+import { Config } from '../../store/settingsSlice';
 
 import * as S from './styles';
 import Lockpad from '../../components/lockpad';
-// import HUD from '../../components/hud/hud';
+import HUD from '../../components/hud';
 
 const LockPad = () => {
   const [mouseDown, setMouseDown] = useState<boolean>(false);
   const [keyDown, setKeyDown] = useState<boolean>(false);
   const [event, setEvent] = useState<MouseEvent | null>(null);
+
+  const { config } = useSelector((state: RootState) => state.settings);
+  const { info } = config as Config;
 
   const mouseDownHandler = () => {
     setMouseDown(true);
@@ -36,7 +42,7 @@ const LockPad = () => {
 
   return (
     <>
-      {/* <HUD life={pickLife} picks={pickLives} info={info} /> */}
+      <HUD life={100} picks={3} info={info} />
       <S.Container>
         <S.InnerContainer
           tabIndex={0}
