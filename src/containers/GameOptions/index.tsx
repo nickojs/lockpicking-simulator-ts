@@ -1,7 +1,9 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
+
 import { setSettings } from '../../store/settingsSlice';
+import { clearPicks } from '../../store/pickSlice';
 
 import zoneGenerator from '../../helpers/zone-generator';
 
@@ -30,6 +32,8 @@ export default () => {
     dispatch(setSettings({ settings: gameSettings }));
     history.push('/game');
   };
+
+  useEffect(() => { dispatch(clearPicks()); }, []);
 
   return (
     <S.Container>
