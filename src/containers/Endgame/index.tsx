@@ -1,6 +1,7 @@
 import React from 'react';
 import { RouteProps, useHistory } from 'react-router-dom';
 import * as S from './styles';
+// eslint-disable-next-line import/extensions
 import answers from './text.json';
 
 interface EndgameProps {

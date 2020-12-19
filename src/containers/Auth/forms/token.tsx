@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import * as S from './styles';
 import useRequest, { Options, State } from '../../../hooks/useRequest';
@@ -8,7 +8,7 @@ export default () => {
 
   const [options, setOptions] = useState<Options>(null);
   const [requestData] = useRequest(options);
-  const { loading, error, data } = requestData as State;
+  const { loading, error } = requestData as State;
 
   const submit = (payload: Record<string, any>) => setOptions({
     method: 'POST',
@@ -16,10 +16,6 @@ export default () => {
     url: 'https://reqres.in/api/users',
     data: payload
   });
-
-  useEffect(() => {
-    console.log(data);
-  }, [data]);
 
   return (
     <>

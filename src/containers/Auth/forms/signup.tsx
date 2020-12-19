@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 
 import * as S from './styles';
@@ -12,7 +12,7 @@ export default () => {
 
   const [options, setOptions] = useState<Options>(null);
   const [requestData] = useRequest(options);
-  const { loading, error, data } = requestData as State;
+  const { loading, error } = requestData as State;
 
   const submit = (payload: Record<string, any>) => setOptions({
     method: 'POST',
@@ -21,17 +21,11 @@ export default () => {
     data: payload
   });
 
-  useEffect(() => {
-    // redirect to login, auto login, whatever
-    console.log(data);
-  }, [data]);
-
   return (
     <>
       <S.MsgContainer>
         {error && <S.ErrorMsg>{error}</S.ErrorMsg>}
         {loading && <p>Loading...</p>}
-        {data && <p>Redirecting...</p>}
       </S.MsgContainer>
 
       <S.SmallTitle>Hey you, you&apos;re finally awake</S.SmallTitle>

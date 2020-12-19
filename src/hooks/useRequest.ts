@@ -82,8 +82,6 @@ export default (options: Options) => {
       break;
   }
 
-  console.log(baseURL);
-
   const fetchData = useCallback(async () => {
     dispatch({ type: ActionTypes.LOADING, status: true });
     try {
