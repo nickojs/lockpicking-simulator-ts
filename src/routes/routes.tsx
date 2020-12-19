@@ -2,33 +2,23 @@ import React from 'react';
 import { Switch, Route, Redirect } from 'react-router-dom';
 
 import Home from '../containers/Home';
-// import LockpadMenu from '../containers/LockpadMenu/LockpadMenu';
-// import Lockpad from '../containers/Lockpad/Lockpad';
-// import Outcome from '../containers/Outcome/Outcome';
 import About from '../containers/About';
 import Auth from '../containers/Auth';
 import Logout from '../containers/Logout';
 import Stats from '../containers/Stats';
 import GameOptions from '../containers/GameOptions';
 import Game from '../containers/Game';
-
-// import withNavigation from '../hoc/withNavigation';
+import Endgame from '../containers/Endgame';
 
 const routesArray = [
-  // { path: '/game-options', name: 'Options', Component: LockpadMenu },
-  // { path: '/game', name: 'Game', Component: Lockpad },
-  // { path: '/endgame', name: 'Endgame', Component: Outcome },
-  //  { path: '/about', name: 'About', Component: About },
-  //  { path: '/auth', name: 'Auth', Component: Auth },
-  // { path: '/logout', name: 'Logout', Component: Logout }
-  //  { path: '/stats', name: 'Stats', Component: Stats }
   { path: '/', name: 'Home', Component: Home },
   { path: '/about', name: 'About', Component: About },
   { path: '/stats', name: 'Stats', Component: Stats },
   { path: '/auth', name: 'Auth', Component: Auth },
   { path: '/logout', name: 'Logout', Component: Logout },
   { path: '/game-options', name: 'Game Options', Component: GameOptions },
-  { path: '/game', name: 'Game', Component: Game }
+  { path: '/game', name: 'Game', Component: Game },
+  { path: '/endgame', name: 'Endgame', Component: Endgame }
 ];
 
 const routes = (
