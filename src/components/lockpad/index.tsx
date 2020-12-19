@@ -1,6 +1,8 @@
-import React, { useRef }/* , { useEffect, useRef, useCallback } */ from 'react';
-// import { Redirect } from 'react-router-dom';
-// import { useDispatch, useSelector } from 'react-redux';
+import React, { useEffect, useRef, useState } from 'react';
+import { Redirect } from 'react-router-dom';
+import { useSelector } from 'react-redux';
+import { RootState } from '../../store/rootReducer';
+import { Config } from '../../store/settingsSlice';
 
 // import * as moveActions from '../../../store/actions/movement';
 // import * as pickActions from '../../../store/actions/pick';
@@ -14,20 +16,46 @@ import pickImg from '../../assets/lockpad/pick_with_space.png';
 import useAngle from '../../hooks/useAngle';
 // import distanceMeter from '../../../helpers/distance-meter';
 
-export default ({ event }: any) => {
+const distanceMeter = (pickPosition: number, unlockZone: number[]) => {
+  const unlockZoneLimit = unlockZone.length - 1;
+  const unlockZoneStart = unlockZone[0];
+  const unlockZoneEnd = unlockZone[unlockZoneLimit];
+
+  if (unlockZone.includes(pickPosition)) {
+    return 0;
+  }
+  if (pickPosition < unlockZoneStart) {
+    return unlockZoneStart - pickPosition;
+  }
+  if (pickPosition > unlockZoneEnd) {
+    return pickPosition - unlockZoneEnd;
+  }
+
+  return 0;
+};
+
+interface LockpadProps {
+  event: MouseEvent | null;
+  keyDown: boolean;
+}
+
+const DEGS = 90;
+
+export default ({ event, keyDown }: LockpadProps) => {
   // const { input, movement, pick, game, user } = useSelector((state) => state);
   // const { token, username } = user;
-  // const { keyDown, event, keyPressMoment } = input;
-  // const { turning, rotation, distanceFromUnlock, isUnlockable } = movement;
   // const { pickLife, pickLives } = pick;
-  // const { gameOver, unlock, notification, redirect, settings } = game;
-  // const { hotzone, unlockzone, startingTime } = settings;
+  const { config } = useSelector((state: RootState) => state.settings);
+  const { unlockzone } = config as Config;
+
+  const [keyDownTime, setKeyDownTime] = useState<number>(0);
+  const [distance, setDistance] = useState<number>(-1);
+  const [unlockable, setUnlockable] = useState<boolean>(false);
+  const [redirect, setRedirect] = useState<boolean>(false);
 
   // const dispatch = useDispatch();
   const pickRef = useRef<HTMLImageElement | null>(null);
   const pickPosition = useAngle(pickRef, event);
-
-  console.log('pickPOsition:: \n', pickPosition);
 
   // const postStats = useCallback((time, picks) => {
   //   console.log('posting stats...');
@@ -47,42 +75,31 @@ export default ({ event }: any) => {
   // }, [token, username]);
 
   // // defines if the pick is on the hotzone
-  // useEffect(() => {
-  //   const isPickOnHotzone = hotzone.includes(pickPosition);
-  //   // limits the dispatches, without gameplay sacrifice
-  //   const timer = setTimeout(() => {
-  //     if (!isPickOnHotzone) dispatch(moveActions.clearHotzone());
-  //   }, 100);
+  useEffect(() => {
+    const distance = distanceMeter(pickPosition, unlockzone);
+    setDistance(distance > DEGS ? -3 : DEGS - distance);
+  }, [pickPosition, unlockzone]);
 
-  //   const distance = distanceMeter(pickPosition, unlockzone);
-  //   dispatch(moveActions.setHotzone(distance));
+  useEffect(() => {
+    if (!keyDown) setKeyDownTime(0);
+    const timer = setInterval(() => {
+      if (keyDown) setKeyDownTime((pState: number) => pState + 16);
+    }, 16);
 
-  //   return () => { clearTimeout(timer); };
-  // }, [pickPosition, hotzone, unlockzone, dispatch]);
+    return () => { clearInterval(timer); };
+  }, [keyDown]);
 
-  // // calculates the distance between the current pick location and unlockzone
-  // useEffect(() => {
-  //   const degs = 90 - (distanceFromUnlock * 2);
+  useEffect(() => {
+    if (distance === 90) {
+      setUnlockable(true);
+    }
+  }, [distance]);
 
-  //   if (distanceFromUnlock === null) return;
-
-  //   dispatch(moveActions.setRotation(degs));
-
-  //   if (distanceFromUnlock === 0) {
-  //     dispatch(moveActions.setUnlockable());
-  //   } else {
-  //     dispatch(moveActions.clearUnlockable());
-  //   }
-  // }, [distanceFromUnlock, dispatch]);
-
-  // // turns the lock based on keyPress (keyDown)
-  // useEffect(() => {
-  //   if (!keyDown) {
-  //     dispatch(moveActions.clearTurning());
-  //     return;
-  //   }
-  //   dispatch(moveActions.setTurning());
-  // }, [keyDown, dispatch]);
+  useEffect(() => {
+    if (unlockable && keyDownTime > 750) {
+      setRedirect(true);
+    }
+  }, [unlockable, keyDownTime]);
 
   // // defines wherever the pick is broken or not
   // useEffect(() => {
@@ -144,8 +161,8 @@ export default ({ event }: any) => {
     <>
       <S.LockBackground>
         <S.LockpadContainer
-          position={55}
-          isTurning={false}
+          position={distance}
+          isTurning={keyDown}
         >
           <S.Pick
             src={pickImg}
@@ -162,9 +179,9 @@ export default ({ event }: any) => {
           </S.LockpadBackground>
         </S.LockpadContainer>
       </S.LockBackground>
-      {/* {redirect
-        && <Redirect to={redirect} />}
-      {notification
+      {redirect
+        && <Redirect to="/" />}
+      {/* {notification
         && <Notification>Oops, you just broke a pick</Notification>} */}
     </>
   );

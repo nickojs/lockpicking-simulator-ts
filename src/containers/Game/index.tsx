@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 
 import * as S from './styles';
 import Lockpad from '../../components/lockpad';
@@ -7,8 +7,7 @@ import Lockpad from '../../components/lockpad';
 const LockPad = () => {
   const [mouseDown, setMouseDown] = useState<boolean>(false);
   const [keyDown, setKeyDown] = useState<boolean>(false);
-  const [keyDownTime, setKeyDownTime] = useState<number>(0);
-  const [event, setEvent] = useState<MouseEvent>();
+  const [event, setEvent] = useState<MouseEvent | null>(null);
 
   const mouseDownHandler = () => {
     setMouseDown(true);
@@ -26,7 +25,6 @@ const LockPad = () => {
 
   const keyUpHandler = () => {
     setKeyDown(false);
-    setKeyDownTime(0);
   };
 
   const mouseMoveHandler = (e: React.MouseEvent) => {
@@ -35,18 +33,6 @@ const LockPad = () => {
       setEvent(nativeEvent);
     }
   };
-
-  useEffect(() => {
-    const timer = setInterval(() => {
-      if (keyDown) setKeyDownTime((pState: number) => pState + 16);
-    }, 16);
-
-    return () => { clearInterval(timer); };
-  }, [keyDown]);
-
-  useEffect(() => {
-    console.log(keyDownTime);
-  }, [keyDownTime]);
 
   return (
     <>
@@ -62,6 +48,7 @@ const LockPad = () => {
         >
           <Lockpad
             event={event}
+            keyDown={keyDown}
           />
         </S.InnerContainer>
       </S.Container>

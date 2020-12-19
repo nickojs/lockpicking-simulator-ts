@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import useWindowSize from './window-size';
 
-export default (elementRef: any, event: MouseEvent) => {
+export default (elementRef: any, event: MouseEvent | null) => {
   const [internalAngle, setInternalAngle] = useState<number[]>([]);
   const [finalAngle, setFinalAngle] = useState<number>(0);
   const windowSize = useWindowSize();
