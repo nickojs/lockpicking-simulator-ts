@@ -7,7 +7,7 @@ import * as S from './styles';
 import Lockpad from '../../components/lockpad';
 import HUD from '../../components/hud';
 
-const LockPad = () => {
+export default () => {
   const [mouseDown, setMouseDown] = useState<boolean>(false);
   const [keyDown, setKeyDown] = useState<boolean>(false);
   const [event, setEvent] = useState<MouseEvent | null>(null);
@@ -62,5 +62,3 @@ const LockPad = () => {
     </>
   );
 };
-
-export default LockPad;
