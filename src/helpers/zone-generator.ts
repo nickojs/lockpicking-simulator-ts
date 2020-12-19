@@ -6,42 +6,42 @@ const difficultyLevel = (difficulty: number) => {
       return {
         info: 'are you kidding me?',
         range: 220,
-        lifeSpeed: 100
+        lifeSpeed: 0
       };
     case 1:
     case 2:
       return {
         info: 'novice',
         range: 120,
-        lifeSpeed: 80
+        lifeSpeed: 0.05
       };
     case 3:
     case 4:
       return {
         info: 'apprentice',
         range: 80,
-        lifeSpeed: 60
+        lifeSpeed: 0.15
       };
     case 5:
     case 6:
       return {
         info: 'adept',
         range: 40,
-        lifeSpeed: 40
+        lifeSpeed: 0.25
       };
     case 7:
     case 8:
       return {
         info: 'expert',
         range: 20,
-        lifeSpeed: 20
+        lifeSpeed: 0.35
       };
     case 9:
     case 10:
       return {
         info: 'master',
         range: 8,
-        lifeSpeed: 10
+        lifeSpeed: 0.5
       };
     default:
       throw new Error('Unknown difficulty');

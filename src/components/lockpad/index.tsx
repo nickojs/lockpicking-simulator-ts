@@ -29,7 +29,7 @@ const DEGS = 90;
 
 export default ({ event, keyDown }: LockpadProps) => {
   const { config } = useSelector((state: RootState) => state.settings);
-  const { unlockzone } = config as Config;
+  const { unlockzone, lifeSpeed } = config as Config;
   const { pickLife, pickQtd } = useSelector((state: RootState) => state.pick);
 
   const [keyDownTime, setKeyDownTime] = useState<number>(0);
@@ -87,7 +87,7 @@ export default ({ event, keyDown }: LockpadProps) => {
 
   useEffect(() => {
     if (keyDownTime > 150 && pickLife > 0 && !unlockable) {
-      dispatch(reduceLife(0.5));
+      dispatch(reduceLife(lifeSpeed));
     }
   }, [keyDownTime, pickLife, unlockable]);
 
