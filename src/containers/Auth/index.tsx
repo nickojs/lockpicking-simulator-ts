@@ -96,6 +96,8 @@ export default () => {
         <InnerContainer>
           <Title>Login</Title>
           <TextSmall>Press space to open menu</TextSmall>
+          <br />
+          <TextSmall>This is just for show. Backend is not implemented yet!</TextSmall>
         </InnerContainer>
 
         <Forms index={index} isAuth={isAuth} />
