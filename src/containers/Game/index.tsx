@@ -8,6 +8,7 @@ const LockPad = () => {
   const [mouseDown, setMouseDown] = useState<boolean>(false);
   const [keyDown, setKeyDown] = useState<boolean>(false);
   const [keyDownTime, setKeyDownTime] = useState<number>(0);
+  const [event, setEvent] = useState<MouseEvent>();
 
   const mouseDownHandler = () => {
     setMouseDown(true);
@@ -17,7 +18,9 @@ const LockPad = () => {
     setMouseDown(false);
   };
 
-  const keyDownHandler = () => {
+  const keyDownHandler = (e: React.KeyboardEvent) => {
+    const key = e.nativeEvent.code;
+    if (key !== 'Space') return;
     setKeyDown(true);
   };
 
@@ -26,9 +29,10 @@ const LockPad = () => {
     setKeyDownTime(0);
   };
 
-  const mouseMoveHandler = () => {
-    if (mouseDown) {
-      console.log('moving mouse');
+  const mouseMoveHandler = (e: React.MouseEvent) => {
+    if (mouseDown && !keyDown) {
+      const { nativeEvent } = e;
+      setEvent(nativeEvent);
     }
   };
 
@@ -56,7 +60,9 @@ const LockPad = () => {
           onKeyDown={keyDownHandler}
           onMouseMove={mouseMoveHandler}
         >
-          <Lockpad />
+          <Lockpad
+            event={event}
+          />
         </S.InnerContainer>
       </S.Container>
     </>

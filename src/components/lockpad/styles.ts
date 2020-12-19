@@ -48,9 +48,9 @@ export const Lockpad = styled.img`
   width: 70px; 
 `;
 
-export const Pick = styled.img.attrs((props: any) => ({
+export const Pick = styled.img.attrs(({ position }: { position: number }) => ({
   style: {
-    transform: `rotate(${props.position}deg) translate(-50%, 0%)`
+    transform: `rotate(${position}deg) translate(-50%, 0%)`
   }
 }))`
   position: absolute;

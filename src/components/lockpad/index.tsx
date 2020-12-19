@@ -1,4 +1,4 @@
-import React/* , { useEffect, useRef, useCallback } */ from 'react';
+import React, { useRef }/* , { useEffect, useRef, useCallback } */ from 'react';
 // import { Redirect } from 'react-router-dom';
 // import { useDispatch, useSelector } from 'react-redux';
 
@@ -11,11 +11,10 @@ import * as S from './styles';
 import lockhole from '../../assets/lockpad/lockhole.png';
 import pickImg from '../../assets/lockpad/pick_with_space.png';
 
-// import useAngle from '../../../hooks/angle';
+import useAngle from '../../hooks/useAngle';
 // import distanceMeter from '../../../helpers/distance-meter';
 
-export default () => {
-  console.log('hi');
+export default ({ event }: any) => {
   // const { input, movement, pick, game, user } = useSelector((state) => state);
   // const { token, username } = user;
   // const { keyDown, event, keyPressMoment } = input;
@@ -25,8 +24,10 @@ export default () => {
   // const { hotzone, unlockzone, startingTime } = settings;
 
   // const dispatch = useDispatch();
-  // const pickRef = useRef(null);
-  // const pickPosition = useAngle(pickRef, event, hotzone);
+  const pickRef = useRef<HTMLImageElement | null>(null);
+  const pickPosition = useAngle(pickRef, event);
+
+  console.log('pickPOsition:: \n', pickPosition);
 
   // const postStats = useCallback((time, picks) => {
   //   console.log('posting stats...');
@@ -149,8 +150,9 @@ export default () => {
           <S.Pick
             src={pickImg}
             alt="a picklock that looks like a twig"
-            // ref={pickRef}
-            // position="12"
+            ref={(ref) => pickRef.current = ref}
+            // @ts-ignore
+            position={pickPosition}
           />
           <S.LockpadBackground>
             <S.Lockpad
