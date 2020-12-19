@@ -14,6 +14,7 @@ const LockPad = () => {
 
   const { config } = useSelector((state: RootState) => state.settings);
   const { info } = config as Config;
+  const { pickLife, pickQtd } = useSelector((state: RootState) => state.pick);
 
   const mouseDownHandler = () => {
     setMouseDown(true);
@@ -42,7 +43,7 @@ const LockPad = () => {
 
   return (
     <>
-      <HUD life={100} picks={3} info={info} />
+      <HUD life={pickLife} picks={pickQtd} info={info} />
       <S.Container>
         <S.InnerContainer
           tabIndex={0}
