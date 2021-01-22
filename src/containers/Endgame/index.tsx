@@ -57,7 +57,7 @@ export default ({ location }: EndgameProps) => {
     <S.Container>
       <S.DialogPadded>
         {state.endgame === 1 && <GameOver />}
-        {state.endgame === 2 && <Unlocked name="test" />}
+        {state.endgame === 2 && <Unlocked name="fam" />}
         <S.Navigation>
           <S.Button onClick={returnHandler}>
             Return
