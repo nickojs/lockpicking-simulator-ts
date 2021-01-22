@@ -20,28 +20,28 @@ const difficultyLevel = (difficulty: number) => {
       return {
         info: 'apprentice',
         range: 80,
-        lifeSpeed: 0.15
+        lifeSpeed: 0.10
       };
     case 5:
     case 6:
       return {
         info: 'adept',
         range: 40,
-        lifeSpeed: 0.25
+        lifeSpeed: 0.15
       };
     case 7:
     case 8:
       return {
         info: 'expert',
         range: 20,
-        lifeSpeed: 0.35
+        lifeSpeed: 0.20
       };
     case 9:
     case 10:
       return {
         info: 'master',
         range: 8,
-        lifeSpeed: 0.5
+        lifeSpeed: 0.25
       };
     default:
       throw new Error('Unknown difficulty');
